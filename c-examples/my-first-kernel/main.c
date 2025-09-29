@@ -1,0 +1,46 @@
+#include "../vcsLib.h"
+
+int elf_main(uint32_t* args)
+{
+	// Always reset PC first, cause it's going to be close to the end of the 6507 address space
+	vcsJmp3();
+	
+	// Init TIA and RIOT RAM
+	vcsLda2(0);
+	for (int i = 0; i < 256; i++) {
+		vcsSta3(i);
+	}
+
+	while (1)
+	{
+		// 3 lines of VSYNC
+		vcsLda2(2);
+		vcsSta3(VSYNC);
+		for (int i = 0; i < 3; i++) {
+			vcsSta3(WSYNC);
+		}
+		vcsLda2(0);
+		vcsSta3(VSYNC);
+
+		// 37 lines of VBLANK
+		for (int i = 0; i < 37; i++) {
+			vcsSta3(WSYNC);
+		}
+		vcsSta3(VBLANK); // disable blanking
+
+		// 192 lines of COLUBK
+		for (int i = 0; i < 192; i++) {
+            vcsLdx2(i);
+            vcsStx3(COLUBK);
+            vcsJmp3();
+            vcsSta3(WSYNC);
+		}
+	
+		vcsWrite5(VBLANK, 2); // enter blanking
+
+		// 30 lines of Overscan
+		for (int i = 0; i < 30; i++) {
+			vcsSta3(WSYNC);
+		}
+	}
+}
