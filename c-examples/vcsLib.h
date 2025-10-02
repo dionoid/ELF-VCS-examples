@@ -20,7 +20,7 @@ extern "C" {
 #define ST_PAL60_2600     2 // Note: PAL60 is used by the UCA carts to convey the user preference
 
 // feature flags
-#define FF_MULTI_CART     1 // Indicates elf is loaded by multicart and should allow exiting (return from main() function)
+#define FF_MULTI_CART     1 // Indicates the game is loaded by a multicart and allows exiting (= return from elf_main() function)
 
 
 // Defines for VCS/2600 memory mapped registers
@@ -111,7 +111,7 @@ extern const uint8_t ReverseByte[256]; // Reverses the order of the bits. 7..0 b
 // Used to define functions that will be copied to and run from RAM
 #define RAM_FUNC __attribute__((noinline, long_call, section(".RamFunc")))
 
-// Bus Stuffing - must load A, X, and Y prior to using Write3()
+// Bus Stuffing - must load A, X, and Y prior to using vcsWrite3()
 void vcsLdaForBusStuff2();
 void vcsLdxForBusStuff2();
 void vcsLdyForBusStuff2();

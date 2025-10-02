@@ -18,7 +18,7 @@ pub const ST_PAL_2600: u8 = 1;
 pub const ST_PAL60_2600: u8 = 2; // Note: PAL60 is used by the UCA carts to convey the user preference
 
 // Feature flags
-pub const FF_MULTI_CART: u8 = 1; // Indicates elf is loaded by multicart and should allow exiting (return from main() function)
+pub const FF_MULTI_CART: u8 = 1; // Indicates the game is loaded by a multicart and allows exiting (= return from elf_main() function)
 
 // VCS/2600 memory mapped register constants
 pub const VSYNC: u8 = 0x00;
@@ -109,7 +109,7 @@ extern "C" {
     pub static ColorLookup: [u8; 256];
     pub static ReverseByte: [u8; 256]; // Reverses the order of the bits. 7..0 becomes 0..7. Useful for PF0, PF2, and reflecting sprites in software.
 
-    // Bus Stuffing - must load A, X, and Y prior to using Write3()
+    // Bus Stuffing - must load A, X, and Y prior to using vcsWrite3()
     pub fn vcsLdaForBusStuff2();
     pub fn vcsLdxForBusStuff2();
     pub fn vcsLdyForBusStuff2();
@@ -168,6 +168,7 @@ extern "C" {
 }
 
 /// Helper function to generate a sleep of a specific number of cycles (must be > 1)
+#[link_section = ".RamFunc"]
 pub unsafe fn vcs_sleep(cycles: u16) {
     if cycles <= 1 {
         panic!("vcsSleep: cycles must be greater than 1");

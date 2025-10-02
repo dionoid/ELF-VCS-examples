@@ -1,6 +1,6 @@
 #include "../vcsLib.h"
 
-int elf_main(uint32_t* args)
+RAM_FUNC int elf_main(uint32_t* args)
 {
 	// Always reset PC first, cause it's going to be close to the end of the 6507 address space
 	vcsJmp3();
