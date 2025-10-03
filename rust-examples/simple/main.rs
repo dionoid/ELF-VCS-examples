@@ -13,8 +13,8 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
-#[no_mangle]
-#[link_section = ".RamFunc"]
+#[unsafe(no_mangle)]
+#[unsafe(link_section = ".RamFunc")]
 pub extern "C" fn elf_main(_args: *mut u32) -> i32 {
     unsafe {
         // Always reset PC first, cause it's going to be close to the end of the 6507 address space

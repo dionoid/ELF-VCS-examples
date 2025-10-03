@@ -4,6 +4,7 @@
 //! used for Atari 2600 programming.
 
 #![allow(dead_code)]
+#![allow(non_snake_case)]
 
 pub const MP_SYSTEM_TYPE: u8 = 0;
 pub const MP_CLOCK_HZ: u8 = 1;
@@ -96,7 +97,7 @@ pub const TIM64T: u16 = 0x0296;
 pub const T1024T: u16 = 0x0297;
 
 // External C function declarations from vcsLib
-extern "C" {
+unsafe extern "C" {
     // Firmware use only
     pub static Ntsc2600: [u8; 256];
     pub static Pal2600: [u8; 256];
@@ -168,20 +169,22 @@ extern "C" {
 }
 
 /// Helper function to generate a sleep of a specific number of cycles (must be > 1)
-#[link_section = ".RamFunc"]
-pub unsafe fn vcs_sleep(cycles: u16) {
+#[unsafe(link_section = ".RamFunc")]
+pub fn vcsSleep(cycles: u16) {
     if cycles <= 1 {
         panic!("vcsSleep: cycles must be greater than 1");
     }
     
-    if cycles == 3 {
-        vcsJmp3();
-    } else if cycles & 1 != 0 {
-        // Odd number of cycles
-        vcsJmp3();
-        vcsNop2n((cycles - 3) >> 1);
-    } else {
-        // Even number of cycles
-        vcsNop2n(cycles >> 1);
+    unsafe {
+        if cycles == 3 {
+            vcsJmp3();
+        } else if cycles & 1 != 0 {
+            // Odd number of cycles
+            vcsJmp3();
+            vcsNop2n((cycles - 3) >> 1);
+        } else {
+            // Even number of cycles
+            vcsNop2n(cycles >> 1);
+        }
     }
 }

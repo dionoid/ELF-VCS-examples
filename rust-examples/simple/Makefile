@@ -1,5 +1,6 @@
 main: main.rs
 	rustc --target=thumbv6m-none-eabi \
+		--edition=2024 \
 		-C panic=abort \
 		-C opt-level=3 \
 		-C relocation-model=pic \
