@@ -4,6 +4,7 @@ main: main.rs
 		-C panic=abort \
 		-C opt-level=3 \
 		-C relocation-model=pic \
+		-C target-feature=+long-calls \
 		-C link-arg=-r \
 		-C link-arg=-u \
 		-C link-arg=elf_main \
