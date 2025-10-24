@@ -83,10 +83,16 @@ RAM_FUNC int elf_main(uint32_t* args)
         vcsStx3(COLUBK);
 
 		vcsWrite5(VBLANK, 2); // enter blanking
+
+		//read controller and switch values from RIOT
+        // uint8_t INPT4_val = vcsRead4(INPT4);
+        // uint8_t SWCHA_val = vcsRead4(SWCHA);
+        // uint8_t SWCHB_val = vcsRead4(SWCHB);
+
         vcsStartOverblank();
 
         //
-		// run overblank game logic here (read joystick, etc.)
+		// run overblank game logic here (handle joystick input, etc.)
 		//
 	}
 }
