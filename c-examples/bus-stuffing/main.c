@@ -35,7 +35,7 @@ RAM_FUNC int elf_main(uint32_t* args)
 		for (int i = 0; i < 37; i++) {
 			vcsSta3(WSYNC);
 		}
-		vcsSta3(VBLANK); // disable blanking
+		vcsWrite3(VBLANK, 0); // disable blanking
 
 		// 192 lines of COLUBK
 		for (int i = 0; i < 192; i++) {
